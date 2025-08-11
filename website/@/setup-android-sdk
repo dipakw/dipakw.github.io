@@ -1,0 +1,113 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# ---- Config ---------------------------------------------------------------
+SDK_ROOT="${HOME}/Android"
+CMDLINE_ZIP_URL="https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip"
+NDK_VERSION="29.0.13846066"
+NDK_PACKAGE="ndk;${NDK_VERSION}"
+ANDROID_PLATFORM="platforms;android-34"
+BUILD_TOOLS_VERSION="build-tools;34.0.0"
+CMAKE_VERSION="cmake;3.22.1"
+# --------------------------------------------------------------------------
+
+export DEBIAN_FRONTEND=noninteractive
+
+# Use sudo only if not root (keeps script usable outside containers)
+if [ "${EUID:-$(id -u)}" -ne 0 ]; then SUDO="sudo"; else SUDO=""; fi
+
+log() { echo -e "\033[1;32m>>> $*\033[0m"; }
+err() { echo -e "\033[1;31mERROR: $*\033[0m" >&2; }
+
+# --- APT phase (quiet) -----------------------------------------------------
+log "Refreshing APT metadata..."
+$SUDO apt-get update -qq
+
+# Install apt-utils FIRST to avoid 'debconf: delaying package configuration'
+log "Installing apt-utils to satisfy debconf..."
+$SUDO apt-get install -y -qq apt-utils >/dev/null
+
+log "Installing prerequisites..."
+$SUDO apt-get install -y -qq unzip wget tar ca-certificates gnupg coreutils build-essential git ninja-build >/dev/null
+
+log "Installing Java (OpenJDK 17)..."
+$SUDO apt-get install -y -qq openjdk-17-jdk >/dev/null
+
+# --- Java detection --------------------------------------------------------
+JAVA_BIN="$(readlink -f "$(command -v java)")"
+if [[ -z "${JAVA_BIN}" ]]; then err "'java' not found after install"; exit 1; fi
+JAVA_HOME="$(dirname "$(dirname "${JAVA_BIN}")")"
+export JAVA_HOME
+log "JAVA_HOME = ${JAVA_HOME}"
+
+# --- Android cmdline-tools -------------------------------------------------
+mkdir -p "${SDK_ROOT}/cmdline-tools"
+TMP_ZIP="${PWD}/cmdline-tools.zip"
+
+log "Setting up Android command line tools..."
+if [[ ! -x "${SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager" ]]; then
+  rm -f "${TMP_ZIP}"
+  wget -q -O "${TMP_ZIP}" "${CMDLINE_ZIP_URL}"
+  unzip -q "${TMP_ZIP}" -d "${SDK_ROOT}/cmdline-tools"
+  mv "${SDK_ROOT}/cmdline-tools/cmdline-tools" "${SDK_ROOT}/cmdline-tools/latest"
+  rm -f "${TMP_ZIP}"
+else
+  log "cmdline-tools already present, skipping download."
+fi
+
+# --- Env -------------------------------------------------------------------
+export ANDROID_HOME="${SDK_ROOT}"
+export ANDROID_SDK_ROOT="${SDK_ROOT}"
+export PATH="${JAVA_HOME}/bin:${SDK_ROOT}/cmdline-tools/latest/bin:${SDK_ROOT}/platform-tools:${PATH}"
+export ANDROID_NDK_HOME="${ANDROID_HOME}/ndk/${NDK_VERSION}"
+
+# Persist env for login shells (works in containers too)
+BASHRC="${HOME}/.bashrc"
+persist() { grep -qxF "$1" "$BASHRC" 2>/dev/null || echo "$1" >> "$BASHRC"; }
+persist ""
+persist "# --- Android SDK/NDK environment ---"
+persist "export JAVA_HOME=${JAVA_HOME}"
+persist "export ANDROID_HOME=${SDK_ROOT}"
+persist "export ANDROID_SDK_ROOT=${SDK_ROOT}"
+persist "export ANDROID_NDK_HOME=${ANDROID_NDK_HOME}"
+persist 'export PATH="$JAVA_HOME/bin:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH"'
+persist "# -----------------------------------"
+
+# --- SDK components (quiet) -----------------------------------------------
+FILENAME="accept_licenses_$(date +%Y%m%d%H%M%S).sh"
+log "Accepting Android SDK licenses..."
+echo "#!/bin/bash" > "${FILENAME}"
+echo "source ${BASHRC}" >> "${FILENAME}"
+echo "yes | sdkmanager --sdk_root=\"${ANDROID_HOME}\" --licenses >/dev/null" >> "${FILENAME}"
+chmod +x "${FILENAME}"
+./"${FILENAME}" >/dev/null
+rm "${FILENAME}"
+
+log "Installing core SDK components..."
+sdkmanager --sdk_root="${ANDROID_HOME}" \
+  "platform-tools" \
+  "${ANDROID_PLATFORM}" \
+  "${BUILD_TOOLS_VERSION}" \
+  "${CMAKE_VERSION}" >/dev/null
+
+# --- Ensure exact NDK installed -------------------------------------------
+log "Ensuring NDK ${NDK_PACKAGE} is installed..."
+if [[ -d "${ANDROID_NDK_HOME}" ]]; then
+  log "NDK ${NDK_PACKAGE} already installed at ${ANDROID_NDK_HOME}."
+else
+  sdkmanager --sdk_root="${ANDROID_HOME}" "${NDK_PACKAGE}" >/dev/null
+fi
+
+# Verify NDK
+if [[ -d "${ANDROID_HOME}/ndk" ]]; then
+  if [[ -x "${ANDROID_NDK_HOME}/ndk-build" ]]; then
+    log "NDK installed at: ${ANDROID_NDK_HOME}"
+  else
+    err "NDK installed but ndk-build not found at ${ANDROID_NDK_HOME}"
+  fi
+else
+  err "NDK directory missing after install"; exit 1
+fi
+
+log "✅ Done. source ~/.bashrc to take effect."
