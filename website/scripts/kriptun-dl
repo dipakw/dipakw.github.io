@@ -71,4 +71,4 @@ fi
 
 rm -f "$FILENAME"
 
-success "${NAME} v${VERSION} downloaded successfully!"
+success "${NAME} ${VERSION} downloaded successfully!"
