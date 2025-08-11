@@ -1,0 +1,160 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    font-family: "Raleway", sans-serif;
+    font-optical-sizing: auto;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+body {
+    background-color: #f0f0f0;
+}
+
+html,
+body,
+* {
+    box-sizing: border-box;
+}
+
+/* header {
+    display: flex;
+    height: 42px;
+    background-color: #000;
+    color: #aaa;
+} */
+
+main {
+    height: 100vh;
+}
+
+.sided {
+    display: grid;
+    height: 100%;
+    grid-template-columns: 1fr 1fr;
+}
+
+.sided .left {
+    border-right: 1px solid #d1cece;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sided .left .person-avt {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 8px solid #423658;
+    padding: 8px;
+    background-color: #fff;
+    display: block;
+}
+
+.sided .left .iconed-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #423658;
+    font-size: 14px;
+    font-family: "Google Sans Code", monospace;
+    text-decoration: none;
+    line-height: 1;
+}
+
+.sided .right {
+    background-color: #dde6e1;
+    padding: 32px;
+}
+
+.iconed-header {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.iconed-header .title {
+    font-size: 20px;
+    line-height: 1.2;
+}
+
+.iconed-header .desc {
+    opacity: 0.6;
+}
+
+.terminal {
+    background-color: #423658;
+    color: #fff;
+    border-radius: 8px;
+    margin-top: 16px;
+    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.2);
+}
+
+.terminal-head {
+    background-color: #686868;
+    padding: 8px;
+    border-radius: 8px 8px 0 0;
+    height: 24px;
+}
+
+.terminal-body {
+    font-family: "Google Sans Code", monospace;
+    font-optical-sizing: auto;
+    padding: 10px 0;
+}
+
+.terminal-body .line {
+    font-size: 12px;
+    line-height: 1;
+    padding: 6px 16px;
+}
+
+.terminal-body .line.comment {
+    color: #27d361;
+}
+
+.terminal-body .line.comment::before {
+    content: "#";
+    display: inline-block;
+    width: 12px;
+}
+
+.terminal-body .line.command::before {
+    content: "$";
+    display: inline-block;
+    width: 12px;
+}
+
+.terminal-body .line.command:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.terminal-body .line.command .cmd {
+    color: #d5cf8e;
+}
+
+.terminal-body .line.command .opts {
+    color: #b3c133;
+}
+
+.terminal-body .line.command .url {
+    color: #a9b1eb;
+}
+
+.terminal-body .line.command .pipe {
+    color: #dd6d6d;
+}
+
+.terminal-body .line.command .env {
+    color: #fe9aff;
+}
+
+.terminal-body .line.sep {
+    border-top: 1px solid transparent;
+}
