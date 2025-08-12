@@ -105,13 +105,16 @@ main {
 .terminal-body {
     font-family: "Google Sans Code", monospace;
     font-optical-sizing: auto;
-    padding: 10px 0;
+    padding: 0;
 }
 
 .terminal-body .line {
     font-size: 12px;
     line-height: 1;
     padding: 6px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .terminal-body .line.comment {
@@ -121,13 +124,13 @@ main {
 .terminal-body .line.comment::before {
     content: "#";
     display: inline-block;
-    width: 12px;
+    width: 6px;
 }
 
 .terminal-body .line.command::before {
     content: "$";
     display: inline-block;
-    width: 12px;
+    width: 6px;
 }
 
 .terminal-body .line.command:hover {
@@ -155,6 +158,34 @@ main {
     color: #fe9aff;
 }
 
-.terminal-body .line.sep {
-    border-top: 1px solid transparent;
+.terminal-body .block {
+    padding: 8px 0;
+}
+
+.terminal-body .block + .block {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+i.gitbash,
+i.macos,
+i.linux {
+    width: 16px;
+    height: 16px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: block;
+    background-position: center;
+}
+
+i.linux {
+    background-image: url(/img/linux.svg);
+}
+
+i.macos {
+    background-image: url(/img/macos.svg);
+}
+
+i.gitbash {
+    background-image: url(/img/gitbash.svg);
+    margin-bottom: -2px;
 }
