@@ -33,12 +33,11 @@ jobs:
         uses: actions/configure-pages@v5
 
       # PHP runtime only (no Composer or other tools/extensions)
-      - name: Set up PHP 7.4 (runtime only)
-        uses: shivammathur/setup-php@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
-          tools: 'none'
-          coverage: 'none'
+          php-version: '8.4'
+          extensions: json
 
       - name: Generate
         run: |
