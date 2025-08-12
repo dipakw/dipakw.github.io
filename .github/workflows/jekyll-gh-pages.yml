@@ -1,5 +1,5 @@
 # Sample workflow for building and deploying a Jekyll site to GitHub Pages
-name: Deploy Jekyll with GitHub Pages dependencies preinstalled
+name: Publish Website
 
 on:
   # Runs on pushes targeting the default branch
@@ -28,13 +28,29 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
+
+      # PHP runtime only (no Composer or other tools/extensions)
+      - name: Set up PHP 7.4 (runtime only)
+        uses: shivammathur/setup-php@v4
+        with:
+          php-version: '7.4'
+          tools: 'none'
+          coverage: 'none'
+
+      - name: Generate
+        run: |
+          cd website
+          ./generate
+
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
-          source: ./website
+          source: ./website/public
           destination: ./_site
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
 

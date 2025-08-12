@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+PUBLIC_DIR=$(pwd)/public
+SRC_DIR=$(pwd)/src
+
+cd $SRC_DIR
+
+curl https://api.github.com/users/dipakw/repos > $SRC_DIR/data/general/git-projects.json
+php index.php > $PUBLIC_DIR/index.html
