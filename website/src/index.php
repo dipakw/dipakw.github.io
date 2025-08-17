@@ -50,6 +50,29 @@
                         </a>
                     </div>
                 </div>
+                <div class="langs">
+                    <?php
+                        $langs = data('data.general.langs');
+
+                        foreach ( $langs['first'] as $lang ) {
+                            echo sprintf(
+                                '<img src="%s" alt="%s" />',
+                                $lang['url'],
+                                $lang['alt']
+                            );
+                        }
+                        
+                        echo '<div>|</div>';
+
+                        foreach ( $langs['second'] as $lang ) {
+                            echo sprintf(
+                                '<img src="%s" alt="%s" />',
+                                $lang['url'],
+                                $lang['alt']
+                            );
+                        }
+                    ?>
+                </div>
                 <div class="projects">
                     <h2 class="head">Open Source Projects</h2>
                     <div class="inner">

@@ -3,7 +3,11 @@
 PUBLIC_DIR=$(pwd)/public
 SRC_DIR=$(pwd)/src
 
-cd $SRC_DIR
+cd "$SRC_DIR"
 
-curl https://api.github.com/users/dipakw/repos > $SRC_DIR/data/general/git-projects.json
-php index.php > $PUBLIC_DIR/index.html
+if [ ! -f "$SRC_DIR/data/general/git-projects.json" ]; then
+  curl -s https://api.github.com/users/dipakw/repos \
+    -o "$SRC_DIR/data/general/git-projects.json"
+fi
+
+php index.php > "$PUBLIC_DIR/index.html"

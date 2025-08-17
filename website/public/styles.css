@@ -48,14 +48,14 @@ main {
     border-right: 1px solid #d1cece;
     overflow: auto;
     height: 100%;
-    padding: 32px 0;
+    padding: 40px 0;
 }
 
 .intro {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    padding: 0 0 32px 0;
+    padding: 0 0 40px 0;
     font-family: "Google Sans Code", monospace;
 }
 
@@ -95,9 +95,20 @@ main {
     gap: 8px;
 }
 
+.langs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+    border-top: 1px solid #d1cece;
+    border-bottom: 1px solid #d1cece;
+    padding: 12px 0;
+    gap: 10px;
+}
+
 .projects {
     width: 100%;
-    padding: 0 32px;
+    padding: 0 40px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -108,8 +119,8 @@ main {
 .projects .inner {
     background-color: #f0f0f0;
     display: grid;
-    grid-template-columns: 0.5fr 0.5fr;
     margin-left: -1px;
+    grid-template-columns: 1fr 1fr;
     border-radius: 8px;
 }
 
@@ -196,7 +207,7 @@ main {
 
 .sided .right {
     background-color: #dde6e1;
-    padding: 32px;
+    padding: 40px;
     overflow: auto;
 }
 
