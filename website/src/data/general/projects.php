@@ -16,7 +16,8 @@ $show_projects = array(
     'dnsrv'   => '#95a536',
     'uconn'   => '#284f94',
     'logs'    => '#db6464',
-    '?'       => '#423658',
+    // '?'       => '#423658',
+    'gits'    => '#951e72',
 );
 
 foreach ( $show_projects as $name => $color ) {
