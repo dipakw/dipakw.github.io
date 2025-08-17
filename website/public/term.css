@@ -1,0 +1,36 @@
+/* Google chrome */
+@-webkit-keyframes svg-text-anim {
+    40% {
+        stroke-dashoffset: 0;
+        fill: #27d36166;
+    }
+
+    60% {
+        stroke-dashoffset: 0;
+        fill: #27d361;
+    }
+
+    100% {
+        stroke-dashoffset: 0;
+        fill: #27d361;
+    }
+
+}
+
+/* Most browsers */
+@keyframes svg-text-anim {
+    40% {
+        stroke-dashoffset: 0;
+        fill: #27d36166;
+    }
+
+    60% {
+        stroke-dashoffset: 0;
+        fill: #27d361;
+    }
+
+    100% {
+        stroke-dashoffset: 0;
+        fill: #27d361;
+    }
+}

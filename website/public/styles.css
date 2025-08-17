@@ -88,7 +88,7 @@ main {
     line-height: 1;
 }
 
-.intro > div {
+.intro>div {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -124,7 +124,7 @@ main {
     border-radius: 8px;
 }
 
-.projects .inner > div {
+.projects .inner>div {
     border: 1px solid #d1cece;
     margin-bottom: -1px;
     padding: 16px 20px;
@@ -134,19 +134,19 @@ main {
     align-items: center;
 }
 
-.projects .inner > div:first-child {
+.projects .inner>div:first-child {
     border-radius: 8px 0 0 0;
 }
 
-.projects .inner > div:nth-child(2) {
+.projects .inner>div:nth-child(2) {
     border-radius: 0 8px 0 0;
 }
 
-.projects .inner > div:nth-last-child(2) {
+.projects .inner>div:nth-last-child(2) {
     border-radius: 0 0 0 8px;
 }
 
-.projects .inner > div:last-child {
+.projects .inner>div:last-child {
     border-radius: 0 0 8px 0;
 }
 
@@ -195,7 +195,7 @@ main {
     color: #423658;
 }
 
-.project > div:nth-child(2) {
+.project>div:nth-child(2) {
     flex-grow: 1;
 }
 
@@ -301,7 +301,7 @@ main {
     padding: 8px 0;
 }
 
-.terminal-body .block + .block {
+.terminal-body .block+.block {
     border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
@@ -327,4 +327,27 @@ i.macos {
 i.gitbash {
     background-image: url(/img/gitbash.svg);
     margin-bottom: -2px;
+}
+
+.termtxt {
+    padding: 40px 40px;
+    margin: 30px 0 40px 0;
+    background-color: #dde6e1;
+    background-image: radial-gradient(currentColor 1px, transparent 1px);
+    background-size: 16px 16px;
+    color: rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    border: 1px dashed rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.termtxt svg,
+.termtxt img {
+    display: block;
+    width: auto;
+    height: auto;
+    max-height: 80px;
+    max-width: 100%;
 }
