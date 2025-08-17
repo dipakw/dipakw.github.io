@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dipak Acharya | dipakw</title>
+    <title>Dipak | GitHub @dipakw</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -24,7 +24,7 @@
                 <div class="intro">
                     <div><img src="/img/dipak.jpg" alt="Dipak Acharya" class="person-avt"></div>
                     <div class="name-links">
-                        <div class="name">Dipak Acharya</div>
+                        <div class="name">Dipak</div>
                         <div>|</div>
                         <a href="https://github.com/dipakw" class="iconed-link" target="_blank">
                             <svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1"
