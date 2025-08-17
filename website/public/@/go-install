@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# --- Colors and pretty printing ---
+GREEN="\033[0;32m"
+YELLOW="\033[1;33m"
+RED="\033[0;31m"
+RESET="\033[0m"
+NAME="flexole"
+
+info() { echo -e "${YELLOW}➤ $1${RESET}"; }
+success() { echo -e "${GREEN}✔ $1${RESET}"; }
+error() { echo -e "${RED}✖ $1${RESET}" >&2; }
+
+# --- Root check ---
+if [[ "$(id -u)" -ne 0 ]]; then
+  error "This script must be run as root (use sudo or log in as root)."
+  exit 1
+fi
+
+# --- Dependency check ---
+for dep in curl tar uname; do
+  if ! command -v "$dep" >/dev/null 2>&1; then
+    error "Required dependency '$dep' is not installed."
+    exit 1
+  fi
+done
+
+# --- Ask for version ---
+read -rp "Enter Go version (e.g. 1.22.5, leave empty for latest): " GOVERSION
+
+# --- Get latest version if empty ---
+if [[ -z "${GOVERSION}" ]]; then
+  info "Fetching latest Go version..."
+  GOVERSION=$(curl -s https://go.dev/VERSION?m=text | head -n 1 | sed 's/go//')
+fi
+
+# --- Detect OS/Arch ---
+OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
+ARCH="$(uname -m)"
+
+case "$ARCH" in
+  x86_64) ARCH="amd64" ;;
+  aarch64 | arm64) ARCH="arm64" ;;
+  *) error "Unsupported architecture: $ARCH"; exit 1 ;;
+esac
+
+# --- Build URL ---
+GOURL="https://go.dev/dl/go${GOVERSION}.${OS}-${ARCH}.tar.gz"
+
+# --- Check version exists (follow redirects) ---
+info "Checking if Go ${GOVERSION} exists for ${OS}-${ARCH}..."
+STATUS=$(curl -sIL -o /dev/null -w "%{http_code}" "$GOURL")
+if [[ "$STATUS" != "200" ]]; then
+  error "Go version ${GOVERSION} not found for ${OS}-${ARCH} (HTTP $STATUS)."
+  exit 1
+fi
+
+# --- Download ---
+info "Downloading from: $GOURL"
+curl -sSL -o "go${GOVERSION}.${OS}-${ARCH}.tar.gz" "$GOURL"
+
+# --- Remove old Go ---
+info "Removing old Go installation..."
+rm -rf /usr/local/go
+
+# --- Install ---
+info "Installing Go ${GOVERSION}..."
+tar -C /usr/local -xzf "go${GOVERSION}.${OS}-${ARCH}.tar.gz"
+
+# --- Cleanup ---
+rm -f "go${GOVERSION}.${OS}-${ARCH}.tar.gz"
+
+# --- Add to PATH ---
+ADDED_FILE=""
+CURRENT_SHELL=$(basename "${SHELL:-}")
+
+case "$CURRENT_SHELL" in
+  bash) TARGET_FILE="$HOME/.bashrc" ;;
+  zsh)  TARGET_FILE="$HOME/.zshrc" ;;
+  *)    TARGET_FILE="/etc/profile" ;;
+esac
+
+if [[ -f "$TARGET_FILE" ]] && ! grep -q '/usr/local/go/bin' "$TARGET_FILE"; then
+  echo 'export PATH=$PATH:/usr/local/go/bin' >> "$TARGET_FILE"
+  ADDED_FILE="$TARGET_FILE"
+fi
+
+if [[ -n "$ADDED_FILE" ]]; then
+  success "Added Go to PATH in $ADDED_FILE"
+  info "Run: source $ADDED_FILE"
+else
+  info "Go is already in PATH or no suitable profile file found."
+fi
+
+success "Go ${GOVERSION} installed successfully!"
+
+# /usr/local/go/bin/go version
