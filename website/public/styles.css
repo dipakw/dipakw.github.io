@@ -236,9 +236,62 @@ main {
 
 .terminal-head {
     background-color: #686868;
-    padding: 8px;
+    padding: 8px 12px;
     border-radius: 8px 8px 0 0;
-    height: 24px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.terminal-head .ctrl {
+    display: flex;
+    gap: 8px;
+}
+
+.terminal-head .ctrl span {
+    display: block;
+    height: 12px;
+    width: 12px;
+    border-radius: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.70);
+}
+
+.terminal-head .ctrl span:nth-child(1) {
+    background-color: #ff5f56;
+}
+
+.terminal-head .ctrl span:nth-child(2) {
+    background-color: #ffbd2e;
+}
+
+.terminal-head .ctrl span:nth-child(3) {
+    background-color: #27c93f;
+}
+
+.terminal-head .search {
+    width: 152px;
+}
+
+.terminal-head .search input {
+    display: block;
+    width: 100%;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    line-height: 1;
+    height: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    padding: 2px 8px;
+    border: 1px solid rgba(0, 0, 0, 0.60);
+    color: #27d361;
+}
+
+.terminal-head .search input:focus {
+    background-color: rgba(0, 0, 0, 0.6);
 }
 
 .terminal-body {

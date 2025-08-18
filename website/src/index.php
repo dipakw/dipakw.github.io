@@ -143,7 +143,16 @@
                 </div>
 
                 <div class="terminal">
-                    <div class="terminal-head"></div>
+                    <div class="terminal-head">
+                        <div class="ctrl">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <div class="search">
+                            <input type="text" autocomplete="off" placeholder="Search.." />
+                        </div>
+                    </div>
                     <div class="terminal-body">
                         <div class="block">
                             <div class="line comment">
