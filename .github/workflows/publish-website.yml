@@ -35,6 +35,10 @@ jobs:
           php-version: '8.4'
           extensions: json
 
+      - name: Move scripts
+        run: |
+          mv scripts website/public/@
+
       - name: Generate
         run: |
           cd website
