@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# Prompt for inputs
+read -rp "Service name (no spaces): " SERVICE_NAME
+read -rp "Description: " DESCRIPTION
+read -rp "Executable: " EXEC_PATH
+read -rp "Working directory: " WORK_DIR
+read -rp "User to run as: " RUN_USER
+read -rp "Group to run as: " RUN_GROUP
+
+# Define target path
+SERVICE_FILE="/etc/systemd/system/${SERVICE_NAME}.service"
+
+# Confirm before writing
+echo "---------------------------------------------------"
+echo "Creating systemd service at: $SERVICE_FILE"
+read -rp "Proceed? [y/N]: " CONFIRM
+if [[ "$CONFIRM" != "y" && "$CONFIRM" != "Y" ]]; then
+  echo "Aborted."
+  exit 1
+fi
+
+# Write the service file
+sudo tee "$SERVICE_FILE" > /dev/null <<EOF
+[Unit]
+Description=${DESCRIPTION}
+After=network.target
+
+[Service]
+ExecStart=${EXEC_PATH}
+WorkingDirectory=${WORK_DIR}
+Restart=always
+RestartSec=5
+User=${RUN_USER}
+Group=${RUN_GROUP}
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# Reload systemd and enable the new service
+sudo systemctl daemon-reload
+sudo systemctl enable "$SERVICE_NAME"
+
+echo "---------------------------------------------------"
+echo "✅ Service ${SERVICE_NAME} created and enabled!"
+echo "---------------------------------------------------"
+
+echo "sudo systemctl start ${SERVICE_NAME}"
+echo "sudo systemctl status ${SERVICE_NAME}"
+echo
