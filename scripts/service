@@ -1,12 +1,21 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Always read from terminal (even if script is piped)
+input() {
+  local prompt=$1
+  local var
+  read -rp "$prompt" var </dev/tty
+  echo "$var"
+}
 
 # Prompt for inputs
-read -rp "Service name (no spaces): " SERVICE_NAME
-read -rp "Description: " DESCRIPTION
-read -rp "Executable: " EXEC_PATH
-read -rp "Working directory: " WORK_DIR
-read -rp "User to run as: " RUN_USER
-read -rp "Group to run as: " RUN_GROUP
+SERVICE_NAME=$(input "Service name (no spaces): ")
+DESCRIPTION=$(input "Description: ")
+EXEC_PATH=$(input "Executable (full path): ")
+WORK_DIR=$(input "Working directory: ")
+RUN_USER=$(input "User to run as: ")
+RUN_GROUP=$(input "Group to run as: ")
 
 # Define target path
 SERVICE_FILE="/etc/systemd/system/${SERVICE_NAME}.service"
@@ -14,8 +23,8 @@ SERVICE_FILE="/etc/systemd/system/${SERVICE_NAME}.service"
 # Confirm before writing
 echo "---------------------------------------------------"
 echo "Creating systemd service at: $SERVICE_FILE"
-read -rp "Proceed? [y/N]: " CONFIRM
-if [[ "$CONFIRM" != "y" && "$CONFIRM" != "Y" ]]; then
+CONFIRM=$(input "Proceed? [y/N]: ")
+if [[ "$CONFIRM" != [yY] ]]; then
   echo "Aborted."
   exit 1
 fi
@@ -40,14 +49,24 @@ StandardError=journal
 WantedBy=multi-user.target
 EOF
 
-# Reload systemd and enable the new service
 sudo systemctl daemon-reload
-sudo systemctl enable "$SERVICE_NAME"
+echo "---------------------------------------------------"
+echo "✅ Service ${SERVICE_NAME} created."
+echo "---------------------------------------------------"
+CONFIRM=$(input "Would you like to enable? [y/N]: ")
+
+if [[ "$CONFIRM" == [yY] ]]; then
+  sudo systemctl enable "$SERVICE_NAME"
+fi
+
+CONFIRM=$(input "Would you like to start? [y/N]: ")
+
+if [[ "$CONFIRM" == [yY] ]]; then
+  sudo systemctl start "$SERVICE_NAME"
+fi
 
 echo "---------------------------------------------------"
-echo "✅ Service ${SERVICE_NAME} created and enabled!"
+echo "Examples:"
 echo "---------------------------------------------------"
-
 echo "sudo systemctl start ${SERVICE_NAME}"
 echo "sudo systemctl status ${SERVICE_NAME}"
-echo
