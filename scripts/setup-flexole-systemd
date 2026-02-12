@@ -2,20 +2,6 @@
 
 set -e
 
-# Ask user for the dir to install.
-printf "Directory (full path): "
-read INSTALL_DIR
-
-# cd only if the $INSTALL_DIR is not empty.
-if [ -n "$INSTALL_DIR" ]; then
-    cd $INSTALL_DIR
-fi
-
-curl -sL https://dipakw.github.io/@/flexole-dl | sh
-
-# Resolve absolute path for service config.
-ABS_INSTALL_DIR=$(pwd)
-
 # Check root here.
 if [ "$(id -u)" -ne 0 ]; then
     echo "This script must be run as root (use sudo or log in as root)."
@@ -23,12 +9,32 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 # Check if this is Linux with systemd.
-if [ -d /run/systemd/system ] || [ -d /etc/systemd/system ]; then
-    echo "This is Linux with systemd."
-else
-    echo "This is not Linux with systemd."
+if [ ! -d /run/systemd/system ] && [ ! -d /etc/systemd/system ]; then
+    echo "This script requires Linux with systemd."
     exit 1
 fi
+
+# Always read from terminal (even if script is piped). See scripts/service for reference.
+# Prompt goes to stderr so it displays when stdout is captured by $(input "...").
+input() {
+    printf "%s" "$1" >&2
+    read -r _v < /dev/tty
+    echo "$_v"
+}
+
+INSTALL_DIR=$(input "Directory (full path): ")
+
+# Resolve user's INSTALL_DIR to absolute path.
+ABS_INSTALL_DIR=$(cd "${INSTALL_DIR:-.}" && pwd)
+cd "${INSTALL_DIR:-.}"
+
+# Install unzip if not already installed.
+if ! command -v unzip >/dev/null 2>&1; then
+    apt update
+    apt install -y unzip
+fi
+
+curl -sL https://dipakw.github.io/@/flexole-dl | sh
 
 # ─── Install flexole systemd service ───────────────────────────────────────
 SERVICE_NAME="flexole"
@@ -36,7 +42,7 @@ SERVICE_FILE="/etc/systemd/system/${SERVICE_NAME}.service"
 
 cat > "$SERVICE_FILE" << EOF
 [Unit]
-Description=Flexole server
+Description=Flexole server.
 After=network.target
 
 [Service]
@@ -55,8 +61,6 @@ systemctl daemon-reload
 systemctl enable "$SERVICE_NAME"
 systemctl start  "$SERVICE_NAME"
 
-echo ""
-echo "|------------------------------------------------|"
-echo "|  ✓ flexole service installed and started.      |"
-echo "|------------------------------------------------|"
-echo ""
+echo "------------------------------------------------"
+echo "  ✓ flexole service installed and started.      "
+echo "------------------------------------------------"
