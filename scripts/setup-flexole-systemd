@@ -30,8 +30,9 @@ cd "${INSTALL_DIR:-.}"
 
 # Install unzip if not already installed.
 if ! command -v unzip >/dev/null 2>&1; then
-    apt update
-    apt install -y unzip
+    echo "Installing unzip..."
+    apt update >/dev/null 2>&1
+    apt install -y unzip >/dev/null 2>&1
 fi
 
 curl -sL https://dipakw.github.io/@/flexole-dl | sh
