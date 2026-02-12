@@ -76,4 +76,29 @@
     }
 
     setTextAnimation(0.4, 8, 2, 'ease', '#423658', true);
+
+    // ─── Search commands ───────────────────────────────────────────────────────
+    const searchInput = document.querySelector(".terminal-head .search input");
+    const blocks = termBody.querySelectorAll(".block");
+
+    const getBlockText = (block) => {
+        const comment = block.querySelector(".comment");
+        const command = block.querySelector(".command");
+        const parts = [
+            comment?.textContent?.trim() ?? "",
+            command?.textContent?.trim() ?? "",
+        ];
+        return parts.join(" ").toLowerCase();
+    };
+
+    const filterBlocks = (query) => {
+        const q = query.trim().toLowerCase();
+        blocks.forEach((block) => {
+            const text = getBlockText(block);
+            const match = !q || text.includes(q);
+            block.classList.toggle("is-hidden", !match);
+        });
+    };
+
+    searchInput.addEventListener("input", (e) => filterBlocks(e.target.value));
 })()

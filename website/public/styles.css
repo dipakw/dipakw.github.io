@@ -354,6 +354,10 @@ main {
     padding: 8px 0;
 }
 
+.terminal-body .block.is-hidden {
+    display: none;
+}
+
 .terminal-body .block+.block {
     border-top: 1px solid rgba(255, 255, 255, 0.2);
 }

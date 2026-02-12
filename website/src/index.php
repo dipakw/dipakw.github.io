@@ -222,6 +222,17 @@
                                 <span class="env">bash</span>
                             </div>
                         </div>
+
+                        <div class="block">
+                            <div class="line comment">
+                                Download flexole and set up systemd service. <i class="linux"></i>
+                            </div>
+                            <div class="line command"><span class="cmd">curl</span> <span class="opts">-sL</span>
+                                <span class="url">https://dipakw.github.io/@/setup-flexole-systemd</span> <span
+                                    class="pipe">|</span>
+                                <span class="env">sh</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

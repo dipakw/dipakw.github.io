@@ -1,0 +1,62 @@
+#!/bin/sh
+
+set -e
+
+# Ask user for the dir to install.
+printf "Directory (full path): "
+read INSTALL_DIR
+
+# cd only if the $INSTALL_DIR is not empty.
+if [ -n "$INSTALL_DIR" ]; then
+    cd $INSTALL_DIR
+fi
+
+curl -sL https://dipakw.github.io/@/flexole-dl | sh
+
+# Resolve absolute path for service config.
+ABS_INSTALL_DIR=$(pwd)
+
+# Check root here.
+if [ "$(id -u)" -ne 0 ]; then
+    echo "This script must be run as root (use sudo or log in as root)."
+    exit 1
+fi
+
+# Check if this is Linux with systemd.
+if [ -d /run/systemd/system ] || [ -d /etc/systemd/system ]; then
+    echo "This is Linux with systemd."
+else
+    echo "This is not Linux with systemd."
+    exit 1
+fi
+
+# ─── Install flexole systemd service ───────────────────────────────────────
+SERVICE_NAME="flexole"
+SERVICE_FILE="/etc/systemd/system/${SERVICE_NAME}.service"
+
+cat > "$SERVICE_FILE" << EOF
+[Unit]
+Description=Flexole server
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=${ABS_INSTALL_DIR}/flexole s -q
+WorkingDirectory=${ABS_INSTALL_DIR}
+User=root
+Group=root
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl daemon-reload
+systemctl enable "$SERVICE_NAME"
+systemctl start  "$SERVICE_NAME"
+
+echo ""
+echo "|------------------------------------------------|"
+echo "|  ✓ flexole service installed and started.      |"
+echo "|------------------------------------------------|"
+echo ""
