@@ -10,14 +10,15 @@ foreach ( $git_projects as $project ) {
 
 $show_projects = array(
     'flexole' => '#4d779f',
+    'statik2' => '#c47a2d',
     'byrate'  => '#3f8857',
     'kriptun' => '#289487',
     'stego'   => '#b46b82',
     'dnsrv'   => '#95a536',
     'uconn'   => '#284f94',
     'logs'    => '#db6464',
-    // '?'       => '#423658',
     'gits'    => '#951e72',
+    '?'       => '#423658',
 );
 
 foreach ( $show_projects as $name => $color ) {

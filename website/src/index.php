@@ -168,6 +168,18 @@
 
                         <div class="block">
                             <div class="line comment">
+                                Download statik2 - compress files and embed them into a Go executable.
+                                <i class="linux"></i><i class="macos"></i><i class="gitbash"></i>
+                            </div>
+                            <div class="line command"><span class="cmd">curl</span> <span class="opts">-sL</span>
+                                <span class="url">https://dipakw.github.io/@/statik2-dl</span> <span
+                                    class="pipe">|</span>
+                                <span class="env">sh</span>
+                            </div>
+                        </div>
+
+                        <div class="block">
+                            <div class="line comment">
                                 Download byrate - a speed testing tool.
                                 <i class="linux"></i><i class="macos"></i><i class="gitbash"></i>
                             </div>
