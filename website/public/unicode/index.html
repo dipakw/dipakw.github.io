@@ -1,0 +1,208 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+	<title>Preeti to unicode converter</title>
+	<link rel="stylesheet" type="text/css" href="new.css?v=1.3" />
+	<script type="text/javascript" src="/unicode/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="/unicode/unicode.js?v=1.4"></script>
+	<script type="text/javascript" src="/unicode/xtl_u2p.js?v=1.1"></script>
+	<script type="text/javascript" src="/unicode/app-new.js?v=1.9"></script>
+
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-111178297-1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() { dataLayer.push(arguments); }
+		gtag('js', new Date());
+
+		gtag('config', 'UA-111178297-1');
+	</script>
+
+	<!-- Google Tag Manager -->
+	<script>(function (w, d, s, l, i) {
+			w[l] = w[l] || []; w[l].push({
+				'gtm.start':
+					new Date().getTime(), event: 'gtm.js'
+			}); var f = d.getElementsByTagName(s)[0],
+				j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+					'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+		})(window, document, 'script', 'dataLayer', 'GTM-KLQQJ3L');</script>
+	<!--End Google Tag Manager -->
+
+</head>
+
+<body>
+
+	<!-- Google Tag Manager (noscript) -->
+	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KLQQJ3L" height="0" width="0"
+			style="display:none;visibility:hidden"></iframe></noscript>
+	<!-- End Google Tag Manager (noscript) -->
+
+	<div class="topbar">
+		<div report='3' class="tab bsb active">
+			Preeti to Unicode
+		</div>
+		<div report='4' class="tab tabU2P bsb"
+			onClick="gtag('event', 'Click', { 'event_category': 'Interactive', 'event_label': 'Switch Unicode', 'non_interaction': true })">
+			Unicode to Preeti
+		</div>
+	</div>
+
+	<div class="body">
+		<div class="conversion-area">
+
+			<!-- preeti to unicode -->
+			<div class="inputs active">
+				<div class="input input1 bsb">
+					<div class="control bsb">
+						<span class="input-title">प्रिति फन्टका अक्षरहरु</span>
+					</div>
+					<textarea class="bsb preeti_text" id="legacy_text" onkeyup="convert_to_unicode()"
+						spellcheck="false"></textarea>
+				</div>
+				<div class="input input2 bsb">
+					<div class="control bsb">
+						<span class="input-title">नेपाली युनिकोड</span>
+					</div>
+					<textarea class="bsb unicode_text" id="unicode_text" spellcheck="false"></textarea>
+					<span class="copied">Copied!</span>
+				</div>
+				<select id="text_or_html" style="display: none;">
+					<option selected="selected">&nbsp;</option>
+				</select>
+			</div>
+
+			<!-- unicode to preeti -->
+			<div class="inputs">
+				<div class="input input1 bsb">
+					<div class="control bsb">
+						<span class="input-title">नेपाली युनिकोड</span>
+					</div>
+					<textarea class="bsb unicode_text" id="u2p_unicode" spellcheck="false"></textarea>
+				</div>
+				<div class="input input2 bsb">
+					<div class="control bsb">
+						<span class="input-title">प्रिति फन्टका अक्षरहरु</span>
+					</div>
+					<textarea class="bsb preeti_text" id="u2p_preeti" spellcheck="false"></textarea>
+					<span class="copied">Copied!</span>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<textarea id="bin" style="height:10px;width:10px;position:fixed;top:-50px;left:-50px;"></textarea>
+	<div style="display:none;"><img id="cc" /></div>
+
+	<!-- Notice -->
+	<!-- <div class="sale-modal" id="saleModal" style="display: none;">
+		<div class="sale-modal-content">
+			<h2>यो युनिकोड कन्भर्टर बिक्रि मा छ</h2>
+			<p>यदि तपाई खारिद गर्न चाहानुहुन्छ भने कृपया "Buy" मा click गर्नुहोस ।</p>
+			<div class="sale-modal-buttons">
+				<button class="sale-modal-close-btn">Close</button>
+				<a href="https://docs.google.com/forms/d/1xC0e9uPiuxq0LYoZuCLd4j5A0kNCENpXhvkrrtGDarY" target="_blank">
+					<button class="sale-modal-buy-btn">Buy</button>
+				</a>
+			</div>
+		</div>
+	</div> -->
+
+	<style>
+		.sale-modal {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100vw;
+			height: 100vh;
+			background-color: rgba(0, 0, 0, 0.5);
+			z-index: 9999;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.sale-modal-content {
+			background: #fff;
+			padding: 1.5rem;
+			border-radius: 10px;
+			max-width: 260px;
+			width: 90%;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+			text-align: center;
+		}
+
+		.sale-modal-buttons {
+			margin-top: 1.5rem;
+			display: flex;
+			justify-content: space-between;
+		}
+
+		.sale-modal-close-btn,
+		.sale-modal-buy-btn {
+			padding: 0.5rem 1rem;
+			font-size: 1rem;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+
+		.sale-modal-close-btn {
+			background-color: #6c757d;
+			color: white;
+		}
+
+		.sale-modal-buy-btn {
+			background-color: #28a745;
+			color: white;
+		}
+
+		.sale-modal-close-btn:hover {
+			background-color: #5a6268;
+		}
+
+		.sale-modal-buy-btn:hover {
+			background-color: #218838;
+		}
+	</style>
+
+	<script>
+		// (function () {
+		// 	const modalId = 'saleModal';
+		// 	const modal = document.getElementById(modalId);
+		// 	const storageKey = 'saleModalClosedAt';
+
+		// 	function showModal() {
+		// 		if (!modal) return;
+		// 		const closedAt = localStorage.getItem(storageKey);
+		// 		const now = Date.now();
+		// 		const dayMs = 24 * 60 * 60 * 1000;
+
+		// 		if (!closedAt || now - parseInt(closedAt, 10) > dayMs) {
+		// 			modal.style.display = 'flex';
+		// 		}
+
+		// 		setTimeout(closeModal, 10000);
+		// 	}
+
+		// 	function closeModal() {
+		// 		modal.style.display = 'none';
+		// 		localStorage.setItem(storageKey, Date.now().toString());
+		// 	}
+
+		// 	document.addEventListener('DOMContentLoaded', function () {
+		// 		showModal();
+		// 		document.querySelector('.sale-modal-close-btn').addEventListener('click', closeModal);
+		// 	});
+		// })();
+	</script>
+
+</body>
+
+</html>

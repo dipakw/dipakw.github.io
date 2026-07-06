@@ -1,0 +1,184 @@
+html,body{
+	margin: 0px;
+	padding: 0px;
+	font-family:verdana,arial,helvetica,tahoma;
+	font-size:14px;
+	line-height: 20px;
+}
+.bsb{
+	box-sizing:border-box!important;
+	-webkit-box-sizing:border-box!important;
+	-moz-box-sizing:border-box!important;
+	-o-box-sizing:border-box!important;
+	-ms-box-sizing:border-box!important;
+}
+.topbar{
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 40px;
+	background: #9C2A27;
+}
+.body{
+	margin-top: 40px;
+}
+.inputs:after, .topbar:after{
+	content: '';
+	display: block;
+	clear: both;
+}
+.tab {
+	float: left;
+	width: 50%;
+	color: #fff;
+	font-size: 18px;
+	line-height: 30px;
+	padding: 5px 0px;
+	text-align: center;
+	cursor: pointer;
+	position: relative;
+}
+.tab.active{
+	background: #E53935;
+}
+.tab.active:after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0px;
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid #fff;
+    clear: both;
+    margin-left: -3.5px;
+}
+.inputs{
+	display: none;
+	background: #f9f9f9;
+}
+.inputs.active{
+	display: block;
+}
+.input{
+	float: left;
+	width: 50%;
+	height: calc( 100vh - 40px );
+	position: relative;
+}
+.input1 textarea, .input1 .control{
+	border-right: 1px solid #ccc;
+}
+.control{
+	height: 30px;
+	border-bottom: 1px solid #aaa;
+	background: #fff;
+	position: relative;
+}
+textarea{
+	overflow: auto;
+	width: 100%;
+	resize: none;
+	padding: 12px;
+	border: none;
+	outline: none;
+	display: block;
+	position: absolute;
+	top: 30px;
+	left: 0px;
+	height: calc( 100% - 30px );
+	background: #f9f9f9;
+	z-index: 50;
+}
+
+.copied{
+	display: inline-block;
+	background-image: url('check.png');
+	background-repeat: no-repeat;
+	background-size: 60px 60px;
+	background-position: 10px 0px;
+	padding-top: 62px;
+	width: 80px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	text-align: center;
+	margin-top: -41px;
+	margin-left: -40px;
+	font-weight: bold;
+	z-index: 49;
+}
+
+
+@font-face {
+    font-family: customPreeti;
+    src: url(preeti_normal.ttf);
+}
+.preeti_text{
+	font-family:preeti, customPreeti;
+	font-size:17px;
+	line-height: 22px;
+}
+.unicode_text{
+	font-size: 13px;
+	line-height: 20px;
+}
+
+.input-title{
+	display: inline-block;
+	font-weight: 13px;
+	line-height: 18px;
+	padding: 6px 12px;
+	color: #555;
+}
+.copy{
+	font-size: 12px;
+	line-height: 16px;
+	color: navy;
+	cursor: pointer;
+	display: inline-block;
+	position: absolute;
+	right: 10px;
+	top: 8px;
+}
+.copy:hover{
+	color: blue;
+}
+
+
+@media screen and ( max-width: 650px ){
+	.input{
+		width: 100%;
+		height: calc( 50vh - 40px );
+	}
+	.input1 textarea{
+		border-right: none;
+	}
+	.input2{
+		border-top: 1px solid #aaa;
+	}
+	.tab{
+		font-size: 14px;
+	}
+	.input1 .control{
+		border-right: none;
+	}
+}
+
+.with-ad .input{
+  height: calc( 100vh - 140px );
+  border-bottom:1px solid #ddd;
+}
+
+.ad-wrapper{
+    padding-top: 5px;
+    text-align:center;
+    background:#eee;
+}
+
+.ad-wrapper .the-ad{
+    background:#eee;
+    display:inline-block;
+}
