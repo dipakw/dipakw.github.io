@@ -2033,11 +2033,22 @@ export function Sheet(props: SheetProps) {
       </div>
 
       {/* Grid */}
-      <div ref={scrollRef} style={{ flex: 1, overflow: 'scroll', background: 'var(--ex-bg)' }}>
+      <div
+        ref={scrollRef}
+        style={{
+          flex: 1,
+          overflow: 'scroll',
+          background: 'var(--ex-bg)',
+          // Column layout + grid flex-grow below keep the bottom bars pinned to the
+          // container's bottom edge even when the grid is shorter than the viewport.
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
         <div
           onMouseDown={onGridMouseDown}
           onDoubleClick={onGridDoubleClick}
-          style={{ position: 'relative', width: 'max-content', minWidth: '100%', userSelect: 'none' }}
+          style={{ position: 'relative', flex: '1 0 auto', width: 'max-content', minWidth: '100%', userSelect: 'none' }}
         >
           {/* Header row */}
           <div style={{ display: 'flex', position: 'sticky', top: 0, zIndex: 6 }}>
