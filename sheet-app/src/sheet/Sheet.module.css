@@ -1,0 +1,179 @@
+/*
+ * Scoped styles for the Sheet component. Class rules are CSS-module-local so
+ * they can never collide with a host app. Base rules (box-sizing, scrollbars,
+ * placeholder, selection, links) are scoped under `.root` so they only touch
+ * the component's own subtree. Only the theme tokens are intentionally global
+ * (uniquely `--ex-*` prefixed, and referenced by inline styles + the portal
+ * tooltip), so they define nothing visible on their own.
+ */
+
+/* ---- Global theme tokens (light) ---- */
+:global(:root) {
+  --ex-font-sans: 'Instrument Sans', system-ui, sans-serif;
+  --ex-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --ex-font-serif: Georgia, 'Times New Roman', serif;
+
+  --ex-bg: #faf9f5;
+  --ex-surface: #fffdf8;
+  --ex-surface-2: #f3f1ea;
+  --ex-surface-3: #fbfaf5;
+  --ex-popover: #ffffff;
+
+  --ex-border: #eae6db;
+  --ex-border-2: #e4e0d4;
+  --ex-border-strong: #e0dcce;
+  --ex-gridline: #e8e4d8;
+  --ex-cell-border: #3a3a36;
+
+  --ex-text: #1a1a18;
+  --ex-text-strong: #2a2a26;
+  --ex-text-muted: #5c574a;
+  --ex-text-faint: #8a8574;
+  --ex-muted-2: #9a9583;
+  --ex-text-fainter: #a8a392;
+  --ex-text-faintest: #b0ab99;
+  --ex-faintest-2: #b8b3a1;
+  --ex-icon: #3a3a36;
+  --ex-select-text: #4a463a;
+
+  --ex-swatch-border: #d6d2c4;
+  --ex-glyph-faint: #c7c2b2;
+  --ex-dot: #cfc9b8;
+  --ex-hover: #efece3;
+
+  --ex-danger: #b4451f;
+  --ex-danger-border: #e7cfc4;
+  --ex-danger-bg: #f7e9e3;
+  --ex-remove: #cf3b2b;
+  --ex-on-accent: #ffffff;
+
+  --ex-tooltip-bg: #2a2a26;
+  --ex-tooltip-text: #f4f1e8;
+
+  --ex-scrollbar-track: #f3f1ea;
+  --ex-scrollbar-thumb: #d6d2c4;
+  --ex-scrollbar-thumb-hover: #bdb8a6;
+  --ex-selection: #e4e9df;
+  --ex-link: #2f6f5e;
+  --ex-link-hover: #1d4c40;
+}
+
+/* ---- Global theme tokens (dark) ---- */
+:global(:root[data-theme='dark']) {
+  --ex-bg: #1a1a17;
+  --ex-surface: #232320;
+  --ex-surface-2: #2a2925;
+  --ex-surface-3: #201f1c;
+  --ex-popover: #2a2925;
+
+  --ex-border: #37342d;
+  --ex-border-2: #3f3c34;
+  --ex-border-strong: #46433a;
+  --ex-gridline: #322f28;
+  --ex-cell-border: #8f8b7e;
+
+  --ex-text: #d6d3c7;
+  --ex-text-strong: #e6e3d8;
+  --ex-text-muted: #a49e8f;
+  --ex-text-faint: #928c7d;
+  --ex-muted-2: #837e70;
+  --ex-text-fainter: #7c776b;
+  --ex-text-faintest: #6f6a5e;
+  --ex-faintest-2: #6f6a5e;
+  --ex-icon: #c7c3b6;
+  --ex-select-text: #c7c3b6;
+
+  --ex-swatch-border: #4a473e;
+  --ex-glyph-faint: #55524a;
+  --ex-dot: #55524a;
+  --ex-hover: #302e29;
+
+  --ex-danger: #e0734c;
+  --ex-danger-border: #5a392c;
+  --ex-danger-bg: #37271f;
+  --ex-remove: #ef5b47;
+  --ex-on-accent: #ffffff;
+
+  --ex-tooltip-bg: #0e0e0c;
+  --ex-tooltip-text: #eceae0;
+
+  --ex-scrollbar-track: #232320;
+  --ex-scrollbar-thumb: #45423a;
+  --ex-scrollbar-thumb-hover: #55524a;
+  --ex-selection: #34433c;
+  --ex-link: #6bbfa6;
+  --ex-link-hover: #8ed4bd;
+}
+
+/* ---- Base, scoped to the component subtree ---- */
+.root,
+.root * {
+  box-sizing: border-box;
+}
+.root {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ex-scrollbar-thumb) var(--ex-scrollbar-track);
+}
+.root a {
+  color: var(--ex-link);
+  text-decoration: none;
+}
+.root a:hover {
+  color: var(--ex-link-hover);
+  text-decoration: underline;
+}
+.root ::selection {
+  background: var(--ex-selection);
+}
+.root ::placeholder {
+  color: var(--ex-text-faintest);
+  opacity: 0.75;
+}
+.root ::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+.root ::-webkit-scrollbar-track,
+.root ::-webkit-scrollbar-corner {
+  background: var(--ex-scrollbar-track);
+}
+.root ::-webkit-scrollbar-thumb {
+  background: var(--ex-scrollbar-thumb);
+  border: 3px solid var(--ex-scrollbar-track);
+  border-radius: 8px;
+  min-height: 32px;
+  min-width: 32px;
+}
+.root ::-webkit-scrollbar-thumb:hover,
+.root ::-webkit-scrollbar-thumb:active {
+  background: var(--ex-scrollbar-thumb-hover);
+}
+
+/* ---- Local component classes (hover states over inline styles need !important) ---- */
+.tbtn:hover {
+  background: var(--ex-hover) !important;
+}
+.danger:hover {
+  background: var(--ex-danger-bg) !important;
+  border-color: var(--ex-danger-border) !important;
+}
+.tab .x {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.1s;
+}
+.tab:hover .x,
+.tab.active .x {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ---- Tooltip lives in a body-level portal, so it stays a uniquely-named global ---- */
+:global(.excel-tip) {
+  font-weight: 500 !important;
+  letter-spacing: 0.01em;
+  box-shadow: 0 4px 12px rgba(26, 26, 24, 0.18);
+}
+:global(.excel-tip .react-tooltip-arrow) {
+  background: var(--ex-tooltip-bg) !important;
+}

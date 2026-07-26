@@ -35,6 +35,22 @@ jobs:
           php-version: '8.4'
           extensions: json
 
+      # Node for building the Sheet app (mounted at /sheet)
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: yarn
+          cache-dependency-path: sheet-app/yarn.lock
+
+      # Builds into website/public/sheet (see sheet-app/vite.config.ts), so Jekyll
+      # publishes it at https://dipakw.github.io/sheet/
+      - name: Build Sheet app
+        run: |
+          cd sheet-app
+          yarn install --frozen-lockfile
+          yarn build
+
       - name: Move scripts
         run: |
           mv scripts website/public/@

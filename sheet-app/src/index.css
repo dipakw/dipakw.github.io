@@ -1,0 +1,13 @@
+/* App-level root sizing. All theme tokens, scrollbars, and component styling
+   live in the self-contained package stylesheet (src/sheet/sheet.css). */
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  background: var(--ex-bg);
+}
